@@ -1,0 +1,1096 @@
+/* ============================================================
+  TouchShow 3D 展览展示 —— 基础色板
+  只保留背景、强调、正文、辅助四种基础颜色。
+   ============================================================ */
+
+:root {
+  /* 基础色板：背景 / 强调 / 正文 / 辅助 */
+  --palette-bg: #0a0f1a;
+  --palette-accent: #00d4ff;
+  --palette-text: #e8f6ff;
+  --palette-muted: #8ea5b5;
+
+  --accent: var(--palette-accent);
+  --bg-color: var(--palette-bg);
+  --text-color: var(--palette-text);
+  --text-muted: color-mix(in srgb, var(--palette-muted) 72%, transparent);
+
+  /* ---- 由 --accent 统一派生的主题色（各主题只需改 --accent，此处自动跟随）---- */
+  --accent-dim: color-mix(
+    in srgb,
+    var(--palette-accent) 15%,
+    var(--palette-bg)
+  );
+  --accent-glow: color-mix(in srgb, var(--palette-accent) 40%, transparent);
+  --card-bg: color-mix(in srgb, var(--palette-accent) 8%, var(--palette-bg));
+  --card-bg-active: color-mix(
+    in srgb,
+    var(--palette-accent) 14%,
+    var(--palette-bg)
+  );
+
+  /* ---- 通用中性色（不随主题变化） ---- */
+  /* 阴影 */
+  --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.6);
+
+  /* 毛玻璃 / 白色半透明高光 */
+  --glass-border: color-mix(in srgb, var(--palette-text) 14%, transparent);
+  --glass-border-hover: color-mix(
+    in srgb,
+    var(--palette-accent) 70%,
+    transparent
+  );
+  --glass-bg-top: color-mix(in srgb, var(--palette-text) 10%, transparent);
+  --glass-bg-mid: color-mix(in srgb, var(--palette-bg) 78%, transparent);
+  --glass-bg-bottom: color-mix(in srgb, var(--palette-bg) 92%, transparent);
+  --glass-bg-top-hover: color-mix(
+    in srgb,
+    var(--palette-text) 14%,
+    transparent
+  );
+  --glass-bg-bottom-hover: color-mix(
+    in srgb,
+    var(--palette-bg) 88%,
+    transparent
+  );
+
+  /* 按钮激活态玻璃渐变 */
+  --glass-bg-active: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.15) 0%,
+    rgba(255, 255, 255, 0.02) 60%,
+    rgba(255, 255, 255, 0.06) 100%
+  );
+
+  --sans:
+    system-ui, "Segoe UI", "PingFang SC", "Microsoft YaHei", Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  /* 3D 全屏展示，禁用页面滚动 */
+  font-family: var(--sans);
+  background: var(--bg-color);
+  color: var(--text-color);
+  transition:
+    background-color 0.5s ease,
+    color 0.5s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ============================================================
+   顶部标题栏
+   ============================================================ */
+#topBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 13.6vh;
+  z-index: 20;
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  padding: 0 2vh;
+  pointer-events: none;
+}
+
+#topBar-left {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: top;
+  pointer-events: auto;
+  height: 100%;
+  margin-top: 1vh;
+  width: 30%;
+}
+
+#topBar-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  height: 100%;
+  width: 40%;
+  position: relative;
+}
+
+#topBar-right {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  pointer-events: auto;
+  height: 80%;
+  width: 30%;
+}
+
+/* ============================================================
+   内容区
+   ============================================================ */
+#contentArea {
+  position: fixed;
+  top: 13.6vh;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  /* 空容器，不拦截事件，避免遮挡 3D 画布的鼠标/触摸拖拽 */
+  pointer-events: none;
+}
+
+/* Three.js 渲染容器：全屏背景 */
+#app {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+#app canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+/* 左上角 Logo —— 品牌光晕呼吸 */
+#logoWrap {
+  display: flex;
+  align-items: baseline;
+  gap: 1vh;
+  height: 7vh;
+  pointer-events: none;
+  user-select: none;
+  /* 品牌蓝多层光晕 + 底部投影（呼吸动画） */
+  filter: drop-shadow(0 0 6px rgba(0, 212, 255, 0.4))
+    drop-shadow(0 0 18px rgba(0, 212, 255, 0.22))
+    drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+  animation: logoGlow 3.6s ease-in-out infinite;
+}
+
+#logo {
+  display: block;
+  height: 100%;
+  width: auto;
+  /* 提亮品牌色 */
+  filter: saturate(1.15) brightness(1.06);
+}
+
+#logoName {
+  display: block;
+  height: 70%;
+  width: auto;
+  /* 提亮品牌色，与 logo 一致 */
+  filter: saturate(1.15) brightness(1.06);
+}
+
+/* 品牌光晕呼吸动画（柔和扩散，3.6s 周期） */
+@keyframes logoGlow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 6px rgba(0, 212, 255, 0.4))
+      drop-shadow(0 0 18px rgba(0, 212, 255, 0.22))
+      drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.65))
+      drop-shadow(0 0 30px rgba(0, 212, 255, 0.4))
+      drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+  }
+}
+
+/* 顶部居中标题栏标签 */
+#titleLabel {
+  font-size: 3.2vh;
+  font-family: var(--sans);
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(-24px);
+  text-shadow: 0 0 0 transparent;
+  z-index: 10;
+}
+
+/* 标题底部发光横线 */
+#titleLine {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 32vh;
+  opacity: 0;
+  box-shadow: 0px -35px 80px 16px var(--accent);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+/* ============================================================
+   右上角菜单开关按钮 —— 玻璃质感（Glassmorphism）
+   ------------------------------------------------------------
+   设计要点：
+   - 磨砂玻璃：backdrop-filter 模糊 + 高饱和，透出底层 3D 场景
+   - 左上镜面高光 + 主题色内晕 + 半透明玻璃渐变底（多层叠加）
+   - 玻璃斜面边缘：上/左受光发亮、下/右背光压暗（inset 阴影）
+   - 一道斜向高光缓缓扫过镜面（::before 折射反光）
+   - 呼吸辉光 + 悬停/按下/打开三种玻璃状态
+   ============================================================ */
+#menuToggle {
+  position: relative;
+  width: 5.4vh;
+  height: 5.4vh;
+  min-width: 44px;
+  min-height: 44px;
+  max-width: 62px;
+  max-height: 62px;
+  border-radius: 50%;
+  /* 将扫光反光限制在圆形玻璃内 */
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  /* 玻璃材质：左上镜面高光 + 主题色内晕 + 半透明玻璃基底 */
+  background:
+    radial-gradient(
+      140% 140% at 28% 16%,
+      rgba(255, 255, 255, 0.34) 0%,
+      rgba(255, 255, 255, 0.1) 34%,
+      rgba(255, 255, 255, 0.02) 56%,
+      transparent 70%
+    ),
+    radial-gradient(
+      110% 110% at 80% 74%,
+      var(--accent-glow) 0%,
+      var(--accent-dim) 58%,
+      transparent 100%
+    ),
+    linear-gradient(
+      155deg,
+      rgba(255, 255, 255, 0.16) 0%,
+      rgba(255, 255, 255, 0.05) 40%,
+      rgba(0, 0, 0, 0.14) 100%
+    );
+  -webkit-backdrop-filter: blur(18px) saturate(180%) brightness(1.08);
+  backdrop-filter: blur(18px) saturate(180%) brightness(1.08);
+  color: var(--accent);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 玻璃斜面边缘 + 柔和外投影 + 细光环 */
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.5),
+    inset 1px 0 0 rgba(255, 255, 255, 0.18),
+    inset -1px 0 0 rgba(0, 0, 0, 0.16),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.22),
+    0 12px 30px rgba(0, 0, 0, 0.45),
+    0 0 0 4px rgba(255, 255, 255, 0.03);
+  transition:
+    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.25s ease,
+    border-color 0.3s ease,
+    background 0.3s ease;
+  /* 未按下时：玻璃光晕呼吸 */
+  animation: menuGlowPulse 3s ease-in-out infinite;
+  user-select: none;
+  outline: none;
+}
+
+/* 玻璃镜面反光：一道斜向高光缓缓扫过（玻璃折射感） */
+#menuToggle::before {
+  content: "";
+  position: absolute;
+  top: -12%;
+  left: -75%;
+  width: 44%;
+  height: 124%;
+  border-radius: inherit;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.34) 48%,
+    rgba(255, 255, 255, 0.06) 62%,
+    transparent 100%
+  );
+  transform: skewX(-18deg);
+  pointer-events: none;
+  animation: glassSweep 5.5s ease-in-out infinite;
+}
+
+@keyframes glassSweep {
+  0% {
+    left: -75%;
+    opacity: 0;
+  }
+
+  12% {
+    opacity: 1;
+  }
+
+  55% {
+    left: 120%;
+    opacity: 0.6;
+  }
+
+  56%,
+  100% {
+    left: 120%;
+    opacity: 0;
+  }
+}
+
+#menuToggle:hover {
+  border-color: var(--accent);
+  /* 悬停：玻璃更亮 + 固定辉光 */
+  background:
+    radial-gradient(
+      140% 140% at 28% 16%,
+      rgba(255, 255, 255, 0.44) 0%,
+      rgba(255, 255, 255, 0.14) 34%,
+      rgba(255, 255, 255, 0.04) 56%,
+      transparent 70%
+    ),
+    radial-gradient(
+      110% 110% at 80% 74%,
+      var(--accent-glow) 0%,
+      var(--accent-dim) 58%,
+      transparent 100%
+    ),
+    linear-gradient(
+      155deg,
+      rgba(255, 255, 255, 0.22) 0%,
+      rgba(255, 255, 255, 0.07) 40%,
+      rgba(0, 0, 0, 0.1) 100%
+    );
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.62),
+    inset 1px 0 0 rgba(255, 255, 255, 0.22),
+    inset -1px 0 0 rgba(0, 0, 0, 0.12),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.16),
+    0 14px 34px rgba(0, 0, 0, 0.5),
+    0 0 22px var(--accent-glow);
+  transform: translateY(-1px);
+  /* 悬停时暂停呼吸，锁定为固定辉光 */
+  animation: none;
+}
+
+/* 按下反馈：缩小并压暗，模拟按压 */
+#menuToggle:active {
+  transform: scale(0.9);
+  animation: none;
+  box-shadow:
+    inset 0 2px 6px rgba(0, 0, 0, 0.35),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.06),
+    0 2px 6px rgba(0, 0, 0, 0.4),
+    0 0 10px var(--accent-dim);
+}
+
+#menuToggle.open {
+  border-color: var(--accent);
+  /* 打开态：玻璃更亮 + 主题色辉光 */
+  background:
+    radial-gradient(
+      140% 140% at 28% 16%,
+      rgba(255, 255, 255, 0.38) 0%,
+      rgba(255, 255, 255, 0.12) 34%,
+      rgba(255, 255, 255, 0.03) 56%,
+      transparent 70%
+    ),
+    radial-gradient(
+      110% 110% at 80% 74%,
+      var(--accent-glow) 0%,
+      var(--accent-dim) 58%,
+      transparent 100%
+    ),
+    linear-gradient(
+      155deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0.06) 40%,
+      rgba(0, 0, 0, 0.1) 100%
+    );
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.58),
+    inset 1px 0 0 rgba(255, 255, 255, 0.2),
+    inset -1px 0 0 rgba(0, 0, 0, 0.12),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.16),
+    0 12px 30px rgba(0, 0, 0, 0.45),
+    0 0 20px var(--accent-glow);
+  /* 打开时暂停呼吸 */
+  animation: none;
+}
+
+@keyframes menuGlowPulse {
+  0%,
+  100% {
+    box-shadow:
+      inset 0 1px 1px rgba(255, 255, 255, 0.5),
+      inset 1px 0 0 rgba(255, 255, 255, 0.18),
+      inset -1px 0 0 rgba(0, 0, 0, 0.16),
+      inset 0 -2px 0 rgba(0, 0, 0, 0.22),
+      0 12px 30px rgba(0, 0, 0, 0.45),
+      0 0 0 4px rgba(255, 255, 255, 0.03),
+      0 0 22px var(--accent);
+  }
+
+  50% {
+    box-shadow:
+      inset 0 1px 1px rgba(255, 255, 255, 0.5),
+      inset 1px 0 0 rgba(255, 255, 255, 0.18),
+      inset -1px 0 0 rgba(0, 0, 0, 0.16),
+      inset 0 -2px 0 rgba(0, 0, 0, 0.22),
+      0 12px 30px rgba(0, 0, 0, 0.45),
+      0 0 0 4px rgba(255, 255, 255, 0.03),
+      0 0 22px var(--accent-glow);
+  }
+}
+
+.menu-icon {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  font-size: 2.9vh;
+  line-height: 1;
+  font-weight: 400;
+  color: var(--accent);
+  /* 图标发光：主题色光晕 + 底部投影（光晕被玻璃边缘柔化截断） */
+  text-shadow:
+    0 0 12px var(--accent-glow),
+    0 0 2px var(--accent-dim),
+    0 1px 2px rgba(0, 0, 0, 0.5);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* 展开时图标旋转动画 */
+#menuToggle.open .menu-icon {
+  transform: rotate(180deg);
+}
+
+/* ============================================================
+   右侧产品侧边栏
+   ============================================================ */
+#sidebar {
+  position: fixed;
+  top: 14vh;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  overflow: visible;
+}
+
+/* 默认关闭 */
+#sidebar.closed {
+  display: none;
+}
+
+.sidebar-categories {
+  /* 纵向可滚动（分类 + 二级产品菜单较多时），横向隐藏避免弹入动画干扰 */
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 10px 10px 10px 30px;
+  display: flex;
+  flex-direction: column;
+  /* 间距由按钮 / 二级菜单自身 margin 控制，避免收起二级菜单后残留空隙 */
+  gap: 0;
+  /* 隐藏滚动条（仍可滚动，触摸滑动不受影响） */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE / 旧版 Edge */
+}
+
+/* Chrome / Edge / Safari：隐藏滚动条 */
+.sidebar-categories::-webkit-scrollbar {
+  display: none;
+}
+
+/* 类别按钮 —— 毛玻璃 3D 立体按钮 */
+.sidebar-cat-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 3px 10px;
+  flex-shrink: 0;
+  border: 0px solid transparent;
+  background: transparent;
+  color: var(--text-color);
+  font-size: 14px;
+  font-family: var(--sans);
+  cursor: pointer;
+  user-select: none;
+  opacity: 1;
+  position: relative;
+}
+
+.cat-icon img {
+  width: 30px;
+  height: 30px;
+  display: block;
+}
+
+.cat-main {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  flex: 1;
+  height: 50px;
+  background: transparent;
+  transition:
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+  --cat-border: rgba(255, 255, 255, 0.24);
+  --cat-border-bottom: rgba(255, 255, 255, 0.1);
+  --cat-icon-border: rgba(255, 255, 255, 0.4);
+  --cat-glass-bg:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.2),
+      rgba(255, 255, 255, 0.08) 44%,
+      rgba(0, 212, 255, 0.08)
+    ),
+    rgba(255, 255, 255, 0.08);
+}
+
+.cat-main .cat-label,
+.cat-main .cat-count,
+.cat-main .cat-icon {
+  height: 44px;
+  min-width: 0;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  background: var(--cat-glass-bg);
+  border-top: 1px solid var(--cat-border);
+  border-bottom: 1px solid var(--cat-border-bottom);
+  border-radius: 0px 0 0 0px;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) brightness(1.06);
+  backdrop-filter: blur(20px) saturate(180%) brightness(1.06);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.12);
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+  border-right: 0;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-cat-btn:hover .cat-main {
+  --cat-glass-bg:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.27),
+      rgba(255, 255, 255, 0.12) 44%,
+      rgba(0, 212, 255, 0.15)
+    ),
+    rgba(255, 255, 255, 0.11);
+  --cat-icon-border: rgba(255, 255, 255, 0.72);
+}
+
+.sidebar-cat-btn.active .cat-main {
+  --cat-glass-bg:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.34),
+      rgba(255, 255, 255, 0.15) 44%,
+      rgba(0, 212, 255, 0.2)
+    ),
+    rgba(255, 255, 255, 0.14);
+  --cat-icon-border: rgba(0, 212, 255, 0.95);
+}
+
+.cat-main .cat-icon {
+  border-radius: 5px 0 0 5px;
+  max-width: 44px;
+  justify-content: center;
+}
+
+.cat-main .cat-count {
+  border-radius: 0px 5px 5px 0;
+  max-width: 44px;
+  justify-content: center;
+}
+
+/* ============================================================
+   分类二级菜单（产品列表，显示在一级分类按钮下方）
+   ============================================================ */
+/* 展开/收起动画：grid-template-rows 0fr→1fr + 内层 overflow:hidden */
+.sidebar-submenu {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  pointer-events: none;
+  /* 收起时裁掉内层 padding，保证高度严格为 0（不留空隙）；同时不被 flex 压缩 */
+  overflow: hidden;
+  flex-shrink: 0;
+  transition:
+    grid-template-rows 0.35s ease,
+    opacity 0.3s ease;
+}
+
+.sidebar-submenu.open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sidebar-submenu-inner {
+  overflow: hidden;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0px 10px 0px 54px; /* 左右缩进形成层级，底部小留白与下一级分类分隔 */
+}
+
+/* 二级产品按钮 */
+.sidebar-prod-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 12px;
+  margin: 3px 0px;
+  border: 1px solid var(--glass-border);
+  border-radius: 4px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.07) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  color: var(--text-muted);
+  font-size: 14px;
+  font-family: var(--sans);
+  cursor: pointer;
+  text-align: left;
+  user-select: none;
+}
+
+.sidebar-prod-btn:hover {
+  background: var(--glass-bg-top-hover);
+  border-color: var(--glass-border-hover);
+  color: var(--accent);
+}
+
+.sidebar-prod-btn.active {
+  background: var(--glass-bg-active);
+  border-color: var(--glass-border-hover);
+  color: var(--accent);
+  box-shadow: inset 0 0 14px var(--accent-dim);
+}
+
+/* 产品前导圆点 */
+.prod-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  flex: none;
+}
+
+.sidebar-prod-btn:hover .prod-dot,
+.sidebar-prod-btn.active .prod-dot {
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent-glow);
+}
+
+/* ============================================================
+   产品信息框（3D 模型模式）：屏幕左侧展示当前产品（上介绍 / 下图片）
+   高度撑满（顶部栏下方到屏幕底部）、宽度为屏幕 1/4（25vw）
+   出现从左侧滑入、关闭向左滑出；主题色彩与 .cf-card 一致
+   ============================================================ */
+#productPanel {
+  position: fixed;
+  top: 15vh;
+  left: 0;
+  bottom: 0;
+  z-index: 12;
+  width: 35vw;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 26px 28px 30px;
+  border-radius: 0 24px 24px 0; /* 贴左边缘，仅右侧圆角 */
+  pointer-events: none;
+}
+
+#productPanel.visible {
+  pointer-events: auto;
+}
+
+/* 上方：产品介绍文字（占剩余约 2/3，可滚动） */
+.pp-left {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* 隐藏垂直滚动条（长描述仍可滑动查看，触摸屏无碍眼滚动条） */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE / 旧版 Edge */
+}
+
+/* Chrome / Edge / Safari：隐藏滚动条 */
+.pp-left::-webkit-scrollbar {
+  display: none;
+}
+
+.pp-label {
+  flex: 0 0 auto;
+  margin: 0 0 14px;
+  width: 100%;
+  color: var(--text);
+  font-size: clamp(20px, 3vh, 30px);
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-align: left;
+  text-shadow: 1px 1px 1px var(--bg-color);
+}
+
+.pp-desc {
+  margin: 0;
+  width: 100%;
+  font-size: clamp(16px, 2.3vh, 24px);
+  line-height: 1.8;
+  color: var(--text-secondary);
+  text-shadow: 1px 1px 1px var(--bg-color);
+  white-space: pre-wrap;
+}
+
+/* 下方：产品图片（高度占面板 1/3） */
+.pp-right {
+  flex: 0 0 33%;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pp-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* 保持宽高比并尽量撑满，居中显示 */
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* ============================================================
+   Cover Flow 3D 产品展示
+   ============================================================ */
+#coverflow {
+  position: fixed !important;
+  top: 13.6vh !important;
+  left: 0 !important;
+  right: 280px !important;
+  bottom: 0 !important;
+  z-index: 5;
+  perspective: 1000px;
+  pointer-events: none;
+  transition:
+    opacity 0.4s ease,
+    right 0.4s ease;
+}
+
+/* 侧边栏关闭后：卡片区域扩展到右侧全宽（收起侧边栏时使用） */
+#coverflow.cf-expand {
+  right: 0 !important;
+}
+
+#coverflow.cf-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#cf-wrapper {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+/* 卡片上方类别说明 */
+.cf-catdesc {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 7;
+  padding: 12px 30px;
+  font-size: 1.1em;
+  color: var(--text-color);
+  line-height: 1.6em;
+  white-space: pre-wrap;
+  text-align: left;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+  user-select: none;
+  text-shadow: -1px -1px 1px var(--bg-color);
+  max-height: 6em;
+  overflow: hidden;
+}
+
+/* 打字机动画期间显示闪烁光标 */
+.cf-catdesc.typing::after {
+  content: "▌";
+  margin-left: 2px;
+  color: var(--accent);
+  animation: catCursorBlink 0.7s steps(1) infinite;
+}
+
+@keyframes catCursorBlink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+.cf-card {
+  position: absolute;
+  left: 15%;
+  top: 15%;
+  width: 70%;
+  height: 80%;
+  overflow: hidden;
+  /* 纵向 flex：图片在上、描述在底部专属区域，互不遮挡 */
+  display: flex;
+  flex-direction: column;
+  /* 玻璃质感增强：左上受光径向高光 + 主题色微光 + 对角渐变玻璃底 */
+  background:
+    /* 左上角玻璃受光（明显的反光面） */
+    radial-gradient(
+      130% 100% at 15% 0%,
+      rgba(255, 255, 255, 0.14) 0%,
+      rgba(255, 255, 255, 0.04) 35%,
+      transparent 60%
+    ),
+    /* 主题色微光（偏右中，衬底） */
+    radial-gradient(90% 80% at 75% 40%, var(--accent-dim) 0%, transparent 60%),
+    /* 对角渐变玻璃底 */
+    linear-gradient(
+        160deg,
+        var(--glass-bg-top) 0%,
+        var(--card-bg) 45%,
+        var(--glass-bg-mid) 72%,
+        var(--glass-bg-bottom) 100%
+      );
+  -webkit-backdrop-filter: blur(8px) saturate(160%) brightness(1);
+  backdrop-filter: blur(8px) saturate(160%) brightness(1);
+  border-radius: 24px;
+  /* 玻璃边缘：上/左受光发亮、下/右背光压暗，形成玻璃斜面感 */
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.4),
+    inset 2px 0 0 rgba(255, 255, 255, 0.14),
+    inset -1px 0 0 rgba(0, 0, 0, 0.18),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.32),
+    0 0 26px var(--accent-dim),
+    var(--shadow-md);
+  pointer-events: auto;
+  user-select: none;
+  cursor: pointer;
+  will-change: transform;
+  transition:
+    opacity 0.35s ease,
+    filter 0.35s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* 玻璃高光：顶部受光边缘 + 左上斜向光带（文字层仍在其上，保持清晰） */
+.cf-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    /* 顶部玻璃边缘受光高光（贴近上边框的亮带） */
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.18) 0%,
+      rgba(255, 255, 255, 0.05) 10px,
+      transparent 22px
+    ),
+    /* 左上斜向光带 */
+    linear-gradient(
+        115deg,
+        rgba(255, 255, 255, 0.2) 0%,
+        rgba(255, 255, 255, 0.06) 22%,
+        transparent 45%
+      ),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, transparent 40%);
+}
+
+.cf-card.cf-active {
+  border-color: var(--accent);
+  /* 激活态：更亮更浓郁的主题色渐变 + 辉光 + 更强的玻璃边缘 */
+  background:
+    /* 左上角玻璃受光 */
+    radial-gradient(
+      130% 100% at 15% 0%,
+      rgba(255, 255, 255, 0.18) 0%,
+      rgba(255, 255, 255, 0.05) 35%,
+      transparent 60%
+    ),
+    /* 主题色辉光（更强） */
+    radial-gradient(
+        90% 80% at 75% 40%,
+        var(--accent-glow) 0%,
+        var(--accent-dim) 45%,
+        transparent 70%
+      ),
+    linear-gradient(
+      160deg,
+      var(--glass-bg-top-hover) 0%,
+      var(--card-bg-active) 32%,
+      var(--card-bg) 66%,
+      var(--glass-bg-bottom-hover) 100%
+    );
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.45),
+    inset 2px 0 0 rgba(255, 255, 255, 0.2),
+    inset -1px 0 0 rgba(0, 0, 0, 0.2),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.34),
+    inset 0 0 28px var(--accent-dim),
+    0 0 34px var(--accent-glow),
+    var(--shadow-lg);
+}
+
+.cf-card img {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  object-fit: contain;
+  /* 顶部小内边距（卡片无产品名标签，图片充分利用上部空间） */
+  padding: 40px;
+  background: transparent;
+  -webkit-user-drag: none;
+}
+
+/* 卡片图片加载中 / 缺失提示：图片未就绪时居中显示于图片区域 */
+.cf-img-hint {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  /* 避开底部描述，视觉上居中于图片区域 */
+  padding: 1em 0 8em;
+  color: var(--text-muted);
+  font-size: 1.15em;
+  letter-spacing: 0.08em;
+  pointer-events: none;
+  text-shadow: 1px 1px 1px var(--bg-color);
+}
+
+/* 加载旋转动画小圆圈 */
+.cf-img-hint-spin {
+  width: 34px;
+  height: 34px;
+  border: 3px solid var(--accent-dim);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  box-sizing: border-box;
+  animation: cf-img-spin 0.9s linear infinite;
+}
+
+@keyframes cf-img-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.cf-label {
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  z-index: 2;
+  max-width: calc(100% - 28px);
+  padding: 8px 18px 6px;
+  color: var(--text);
+  font-size: 1.45em;
+  font-weight: 700;
+  line-height: 1.35em;
+  letter-spacing: 0.04em;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 1px 1px 1px var(--bg-color);
+  pointer-events: none;
+}
+
+.cf-desc {
+  position: relative;
+  flex: 0 0 auto;
+  /* 图片缺失/加载中时 img 被隐藏，用 auto margin 把描述始终固定在卡片底部 */
+  margin-top: auto;
+  width: 100%;
+  padding: 8px 18px 16px 18px;
+  font-size: 1.5em;
+  color: var(--text-muted);
+  line-height: 1.5em;
+  letter-spacing: 0.04em;
+  white-space: pre-wrap;
+  max-height: 15em;
+  overflow: hidden;
+  /* 仅描述区域底部轻微压暗保证可读性，不再覆盖图片 */
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.45) 0%,
+    rgba(0, 0, 0, 0.15) 70%,
+    transparent 100%
+  );
+  border-radius: 0 0 24px 24px;
+  text-shadow: 1px 1px 1px var(--bg-color);
+}
+
+/* ============================================================
+   页面级缩放禁止（kiosk 模式）
+   ------------------------------------------------------------------
+   3D 画布（#app canvas）已设 touch-action:none，双指捏合由
+   OrbitControls 负责缩放模型，浏览器不会缩放整个页面。
+   但 DOM 覆盖层（卡片 / 侧边栏 / 顶栏等）若保持默认 touch-action，
+   在它们上面捏合仍会触发浏览器页面级缩放，因此这里统一禁止；
+   仅弹出面板保留纵向滚动（pan-y，仍禁止捏合缩放）。
+   ============================================================ */
+#topBar,
+#topBar-left,
+#topBar-right,
+#menuToggle,
+#sidebar,
+.sidebar-cat-btn,
+#coverflow,
+.cf-card,
+.cf-catdesc,
+.cf-label,
+.cf-desc {
+  touch-action: none;
+}

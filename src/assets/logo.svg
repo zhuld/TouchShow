@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<svg width="1680" height="1680" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <title>Layer 1</title>
+ <g class="layer">
+  <title>Layer 1</title>
+  <path d="m1647,20l2,1l-1,2a1177,1177 0 0 0 -59,117q-27,60 -51,122l-1,3a2190,2190 0 0 0 -70,209l-1,4l-1,3l-1,3q0,6 5,12l1,2l2,3l21,40l2,3a724,724 0 0 1 73,265l0,3a725,725 0 0 1 -1,142l0,2a765,765 0 0 1 -55,215l-1,3q-25,60 -62,116l-4,7l-24,34l-2,2a653,653 0 0 1 -96,107l-8,8l-23,19l-23,19l-8,6l-24,17l-7,5a735,735 0 0 1 -417,130l-16,0q-39,1 -78,-3l-2,0c-91,-10 -178,-35 -311,-101l-3,-2a790,790 0 0 1 -140,-106l-17,-16l-21,-21l-7,-8l-19,-22l-17,-22l-37,-52l-2,-3q-59,-93 -90,-199l-1,-2q-20,-72 -26,-147l0,-3l-2,-59l0,-2a699,699 0 0 1 17,-165q15,-72 44,-139l2,-4q18,-42 41,-82l1,-2l10,-16l2,-3a596,596 0 0 1 72,-97l29,-32l23,-22l7,-7l13,-12l8,-7l26,-21l34,-25l31,-21l36,-21l3,-2c73,-40 149,-124 549,-75l2,1a785,785 0 0 1 311,147l2,2l2,2l5,2l8,-4l2,-2l43,-28l45,-30l3,-2a3609,3609 0 0 0 252,-191m-976,209l-3,1q-79,33 -145,87l-7,5a445,445 0 0 0 -73,70l-7,8l-18,23q-57,73 -88,158l-1,3q-27,73 -34,151l30,-9l116,-39a4308,4308 0 0 0 515,-219l3,-1l96,-51l2,-1l95,-53l64,-37l28,-16l21,-13l-10,-8l-2,-2l-2,-1l-8,-5l-2,-2l-42,-24l-3,-1q-36,-21 -76,-34l-4,-1q-100,-35 -208,-35l-3,0q-121,-1 -234,46m819,-24l-3,3l-28,25l-24,21l-24,21l-24,21l-24,21l-24,21l-23,20l-23,20l-23,20l-23,20l-23,20l-23,20l-23,20l-23,20l-23,20l-14,12l-5,4q-15,14 -34,22l-7,3l-113,57l-3,1l-91,45l-3,2l-14,4l-6,6l-2,1l-9,11l-8,8l-7,8l-7,7l-5,6l-10,10l-7,8l-7,7l-5,6l-10,10l-7,8l-7,7l-5,6l-10,10l-7,8l-7,7l-5,6l-10,10l-7,8l-7,7l-8,9l-28,-7l-20,-5l-12,-3l-87,-24l-2,-1l-50,-14l-23,-6l-3,-1l-153,-42l-3,-1l-3,-1l-2,-1l-4,0l1,101c5,88 30,175 72,252l2,3q11,21 25,42l1,2l10,14l2,2q10,16 23,30l6,8l27,30l7,8l12,11l8,8l12,11l8,6l20,16l5,5q38,29 81,51l3,1a530,530 0 0 0 82,36c82,29 170,39 475,-29l3,-1a557,557 0 0 0 74,-44l2,-1a588,588 0 0 0 154,-153l19,-29l2,-3c44,-72 72,-153 70,-468l-10,-34l-1,-3l-20,-51l-1,-3l-12,-23l-1,-2q-2,-5 -5,-6c-23,91 -42,182 -76,455l0,2l-1,13l0,3l-1,4l0,12l-3,-1l-2,0l-4,-1l-53,-15l-3,-1l-360,-99l-4,-2l2,-2l39,-49l58,-72l34,-44l37,-46l34,-42l36,-45l36,-46l39,-49l34,-42l35,-45l29,-36l34,-42l35,-45l29,-36l36,-45l-1,-2z" fill="#0089cf" id="svg_1" opacity="undefined" transform="matrix(1 0 0 1 10 10)"/>
+  <path d="m1371,329q0,5 -4,8a1321,1321 0 0 0 -79,98l-45,56l-45,56l-46,58l-27,33l-14,17l-45,56l-45,56l-45,56l-43,54l-39,48l-2,3l-1,3q-6,4 -13,3l-14,0l-126,-1l-111,0l6,-8l7,-7l23,-26l12,-13l20,-21l14,-17l14,-15l17,-19l14,-15l17,-19l17,-17l9,-11l39,-43l2,-1l7,-8l1,-2l4,-4l5,-6q7,-7 16,-9l12,-6l23,-10l147,-68l38,-18l2,-2l8,-3l2,-1l14,-9l2,-1l1,-2l4,-3l1,-2l8,-6l12,-11l16,-14l12,-11l16,-14l12,-11l16,-14l12,-11l16,-14l10,-9l27,-24l12,-11l16,-14l12,-11l49,-43z" fill="#0089cf" id="svg_2" transform="matrix(1 0 0 1 10 10)"/>
+  <path d="m692,1080l32,0l54,137l1,3l1,3l1,2l4,13l-35,0l-5,-15l-2,-5l-1,-4l0,-2l-2,-8l-68,0l-2,9l-2,6l-1,3l-1,3l-1,4l-4,9l-34,0l9,-26l6,-15l1,-3l41,-103l1,-3l1,-3l1,-2q2,-4 5,-3m13,42l-16,41l-2,4l-1,3l-1,3l-1,3l44,0l-6,-18l-1,-2l-14,-34l-2,0z" fill="#0089cf" id="svg_17" transform="matrix(1 0 0 1 10 10)"/>
+  <path d="m1173,1089q17,15 25,35l0,2l-34,6l-1,-2q-8,-16 -24,-24q-12,-4 -24,2q-16,10 -20,29a92,92 0 0 0 6,63q6,10 17,13q18,3 35,-4c7,-6 9,-18 11,-27l22,6l3,1l3,1l3,1l3,3l-3,9l-2,2l-11,16l-2,3q-10,11 -24,16l-3,1c-17,6 -38,5 -55,-2q-16,-9 -26,-25l-2,-2a77,77 0 0 1 -13,-49l0,-6q-1,-36 23,-61c26,-26 64,-28 93,-7" fill="#0089cf" id="svg_18" transform="matrix(1 0 0 1 10 10)"/>
+  <path d="m791,1080l35,0l8,20l1,3l35,92l39,-115l35,0l-4,14l-1,2l0,3l-2,3l-3,9l-7,21l-11,29l-24,66l-1,3l-3,8l-41,0l-6,-15l-1,-3l-2,-4l-4,-11l-6,-19l-20,-54l-8,-23l-7,-21l-1,-3l-1,-5z" fill="#0189cf" id="svg_19" transform="matrix(1 0 0 1 10 10)"/>
+  <path d="m977,1080l34,0l0,158l-34,0l0,-158z" fill="#0089cf" id="svg_48" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_62" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_63" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_64" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_65" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_66" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_67" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_68" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_69" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_70" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_71" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_72" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_73" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_74" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_75" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_76" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_77" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_78" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_79" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_80" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_81" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_82" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_83" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_84" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_85" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_86" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_87" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_88" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_89" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_90" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_91" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_92" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_93" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_94" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_95" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_96" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_97" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_98" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_99" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_100" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_101" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_102" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_103" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_104" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_105" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_106" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_107" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_108" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_109" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_110" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_111" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_112" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_113" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_114" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_115" transform="matrix(1 0 0 1 10 10)"/>
+  <path fill="#0089cf" id="svg_116" transform="matrix(1 0 0 1 10 10)"/>
+ </g>
+</svg>

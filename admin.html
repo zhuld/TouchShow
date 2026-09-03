@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TouchShow 远程配置</title>
+    <link rel="stylesheet" href="/src/system.css" />
+  </head>
+
+  <body class="page-admin">
+    <header>
+      <span class="dot" id="connDot"></span>
+      <h1>TouchShow 远程配置</h1>
+      <span class="muted" id="status">未连接</span>
+      <div class="spacer"></div>
+      <input
+        type="password"
+        id="token"
+        placeholder="管理令牌（可选）"
+        autocomplete="off"
+      />
+      <span id="dirtyBadge" class="dirty" style="display: none"
+        >● 有未保存的更改</span
+      >
+      <button class="primary" id="btnSave">保存并推送</button>
+      <button id="btnReload">↻ 重新加载</button>
+    </header>
+
+    <main>
+      <p class="desc">
+        通过下拉框选择分类，可逐项修改分类信息与每个产品；保存后所有展示屏幕实时刷新。
+        JSON 模式用于批量/高级编辑；「设置」页包含模型、展示模式与串口设置。
+        管理令牌由服务器
+        <code>ADMIN_TOKEN</code> 环境变量控制，未设置时无需令牌。
+      </p>
+
+      <nav class="tabs" id="tabs">
+        <button type="button" class="tab-btn active" data-tab="form">
+          分类与产品
+        </button>
+        <button type="button" class="tab-btn" data-tab="json">JSON 模式</button>
+        <button type="button" class="tab-btn" data-tab="settings">设置</button>
+        <button type="button" class="tab-btn" data-tab="upload">资源上传</button>
+        <button type="button" class="tab-btn" data-tab="control">
+          远程控制
+        </button>
+        <button type="button" class="tab-btn" data-tab="clients">客户端</button>
+      </nav>
+
+      <!-- ========== 表单模式 ========== -->
+      <div id="formPanel">
+        <div class="card">
+          <h3>分类管理</h3>
+          <div class="row">
+            <div class="field" style="flex: 1; min-width: 260px; margin: 0">
+              <label>选择分类 <span class="cat-pos" id="catPos"></span></label>
+              <div style="display: flex; gap: 8px; align-items: center">
+                <button
+                  class="small nav-btn"
+                  id="btnPrevCat"
+                  title="上一个分类"
+                >
+                  ◀
+                </button>
+                <select id="catSel" style="flex: 1"></select>
+                <button
+                  class="small nav-btn"
+                  id="btnNextCat"
+                  title="下一个分类"
+                >
+                  ▶
+                </button>
+                <button class="small" id="btnAddCat">＋ 新增分类</button>
+                <button class="small" id="btnDelCat">－ 删除分类</button>
+              </div>
+            </div>
+          </div>
+          <div class="cat-cols">
+            <div class="cat-left">
+              <div class="field">
+                <label>分类名称</label><input type="text" id="catLabel" />
+              </div>
+              <div class="field">
+                <label
+                  >目录名称（可选，products/&lt;目录名称&gt;/；缺省用分类名称）</label
+                >
+                <input
+                  type="text"
+                  id="catDir"
+                  placeholder="缺省使用分类名称"
+                />
+              </div>
+              <div class="field">
+                <label>图标（点击选择）</label>
+                <input type="hidden" id="catIcon" />
+                <button
+                  type="button"
+                  class="small icon-toggle"
+                  id="btnToggleIcons"
+                >
+                  ▾ 选择图标
+                  <span class="icon-selected" id="iconPreview"></span>
+                </button>
+                <div id="iconPicker" class="icon-picker collapsed"></div>
+              </div>
+            </div>
+            <div class="cat-right">
+              <div class="field">
+                <label>分类描述</label><textarea id="catDesc"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>
+            产品列表
+            <span class="muted" id="prodCount"></span>
+            <span class="spacer" style="flex: 1"></span>
+            <button class="small" id="btnAddProd">＋ 添加产品</button>
+          </h3>
+          <div id="prodList"></div>
+        </div>
+      </div>
+
+      <!-- ========== JSON 模式 ========== -->
+      <div id="jsonPanel" style="display: none">
+        <div class="toolbar">
+          <button id="btnFormat">◧ 格式化</button>
+        </div>
+        <textarea
+          id="editor"
+          spellcheck="false"
+          placeholder="正在加载配置…"
+        ></textarea>
+        <div id="jsonStatus"></div>
+      </div>
+
+      <!-- ========== 设置（模型 + 串口） ========== -->
+      <div id="settingsPanel" style="display: none">
+        <div class="card">
+          <h3>
+            3D 模型
+            <span class="muted"
+              >展示屏背景展示的模型，保存后实时推送到所有展示屏</span
+            >
+          </h3>
+          <div class="field" style="margin: 0">
+            <label
+              >选择模型（下拉列表为
+              <code>/Models/</code> 目录下的模型文件）</label
+            >
+            <select id="modelFile">
+              <option value="C919.glb">C919.glb</option>
+            </select>
+            <div class="serial-hint">
+              支持 <code>.fbx</code> / <code>.glb</code> /
+              <code>.gltf</code>；文件名变更并保存后，
+              所有展示屏会自动卸载旧模型并加载新模型。JSON 模式顶层字段为
+              <code>model</code>。
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>
+            展示模式
+            <span class="muted">保存后实时推送到所有展示屏幕</span>
+          </h3>
+          <div class="row" style="margin: 0">
+            <div class="field" style="flex: 1; min-width: 260px; margin: 0">
+              <label>选择展示模式</label>
+              <select id="displayModeSel">
+                <option value="image">图片模式（CoverFlow 轮播）</option>
+                <option value="model">3D 模型模式（仅展示模型）</option>
+              </select>
+            </div>
+          </div>
+          <div class="serial-hint">
+            图片模式：点击分类后展示产品图片 CoverFlow 轮播；3D 模型模式：隐藏
+            CoverFlow 组件， 仅展示 <code>model</code> 字段指定的 3D 模型。JSON
+            模式顶层字段为 <code>displayMode</code> （可选值：<code>image</code>
+            <code>model</code>）。
+          </div>
+        </div>
+
+        <div class="card serial-card">
+          <h3>
+            串口设置
+            <span class="muted">展示屏切换产品时发送 action 到串口</span>
+          </h3>
+
+          <!-- 连接状态栏 -->
+          <div class="serial-statusbar">
+            <span class="s-dot" id="serialDot"></span>
+            <span class="s-status" id="serialStatus">未连接</span>
+            <span class="s-detail" id="serialDetail"></span>
+            <span class="s-actions">
+              <button class="small" id="btnSerialConnect" type="button">
+                ▶ 连接
+              </button>
+              <button
+                class="small"
+                id="btnSerialDisconnect"
+                type="button"
+                disabled
+              >
+                ■ 断开
+              </button>
+            </span>
+          </div>
+
+          <!-- 启用 + 端口 + 通信参数（同一行） -->
+          <div class="row serial-row">
+            <label class="serial-switch" style="margin: 0">
+              <input type="checkbox" id="serialEnabled" />
+              <span>
+                <span class="s-sw-title">启用串口</span><br />
+                <span class="s-sw-sub">切换产品时发送</span>
+              </span>
+            </label>
+            <div
+              class="field"
+              style="flex: 1 1 130px; min-width: 100px; margin: 0"
+            >
+              <label>串口号</label>
+              <div style="display: flex; gap: 8px">
+                <select id="serialPort" style="flex: 1">
+                  <option value="">（未检测到串口）</option>
+                </select>
+                <button class="small" id="btnRefreshPorts" type="button">
+                  ↻ 刷新
+                </button>
+              </div>
+            </div>
+            <div class="field serial-param" style="margin: 0">
+              <label>波特率</label>
+              <select id="serialBaud">
+                <option>4800</option>
+                <option selected>9600</option>
+                <option>19200</option>
+                <option>38400</option>
+                <option>57600</option>
+                <option>115200</option>
+              </select>
+            </div>
+            <div class="field serial-param" style="margin: 0">
+              <label>数据位</label>
+              <select id="serialDataBits">
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option selected>8</option>
+              </select>
+            </div>
+            <div class="field serial-param" style="margin: 0">
+              <label>停止位</label>
+              <select id="serialStopBits">
+                <option value="1" selected>1</option>
+                <option value="1.5">1.5</option>
+                <option value="2">2</option>
+              </select>
+            </div>
+            <div class="field serial-param" style="margin: 0">
+              <label>校验</label>
+              <select id="serialParity">
+                <option value="none" selected>无</option>
+                <option value="odd">奇</option>
+                <option value="even">偶</option>
+                <option value="mark">Mark</option>
+                <option value="space">Space</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- 消息模板 -->
+          <div class="field">
+            <label>消息模板</label>
+            <input type="text" id="serialTemplate" value="{action}\r\n" />
+            <div class="serial-hint">
+              <code>{action}</code> 替换为产品 action、<code>{label}</code>
+              替换为产品名称； 支持 <code>\r</code> <code>\n</code>
+              <code>\t</code> <code>\xHH</code> 转义； 模板全部由
+              <code>\xHH</code> 组成时按原始字节发送。
+            </div>
+          </div>
+
+          <div class="serial-divider"></div>
+
+          <!-- 测试发送 -->
+          <div class="row" style="margin: 0">
+            <div class="field" style="flex: 1; min-width: 220px; margin: 0">
+              <label>测试发送（不保存配置，立即发送到当前串口）</label>
+              <div style="display: flex; gap: 8px">
+                <input
+                  type="text"
+                  id="serialTestData"
+                  style="flex: 1"
+                  placeholder="如 HELLO 或 41 42"
+                />
+                <button class="small primary" id="btnSerialTest" type="button">
+                  发送
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /#serial-card -->
+      </div>
+      <!-- /#settingsPanel -->
+
+      <!-- ========== 资源上传（产品图片 / 3D 模型） ========== -->
+      <div id="uploadPanel" style="display: none">
+        <div class="card">
+          <h3>
+            产品图片上传
+            <span class="muted">上传到 public/products/&lt;分类&gt;/ 并可自动绑定到产品</span>
+          </h3>
+          <div class="row" style="margin: 0">
+            <div class="field" style="flex: 1; min-width: 220px; margin: 0">
+              <label
+                >选择分类（上传到该分类的目录名称
+                products/&lt;目录名称&gt;/ 下）</label
+              >
+              <select id="upImageCat"></select>
+            </div>
+            <div class="field" style="flex: 1; min-width: 220px; margin: 0">
+              <label
+                >目标产品（可选，上传后自动写入该产品的图片字段）</label
+              >
+              <select id="upImageProd"></select>
+            </div>
+          </div>
+          <div class="row" style="margin: 0">
+            <div class="field" style="flex: auto; min-width: 380px; margin: 0">
+              <label>选择图片文件</label>
+              <div style="display: flex; gap: 8px; align-items: center">
+                <input
+                  type="file"
+                  id="upImageFile"
+                  accept=".png,.jpg,.jpeg,.webp,.gif,.svg,image/*"
+                  style="flex: 1"
+                />
+                <button class="small primary" id="btnUpImage" type="button">
+                  上传图片
+                </button>
+              </div>
+              <div class="serial-hint" id="upImageTarget">
+                支持 png / jpg / jpeg / webp / gif / svg；同名文件直接覆盖
+              </div>
+            </div>
+          </div>
+          <div class="serial-divider"></div>
+          <div class="up-files" id="upImageFiles"></div>
+        </div>
+
+        <div class="card">
+          <h3>
+            3D 模型上传
+            <span class="muted">上传到 public/Models/，保存后展示屏自动加载</span>
+          </h3>
+          <div class="row" style="margin: 0">
+            <div class="field" style="flex: auto; min-width: 380px; margin: 0">
+              <label>选择模型文件</label>
+              <div style="display: flex; gap: 8px; align-items: center">
+                <input
+                  type="file"
+                  id="upModelFile"
+                  accept=".glb,.fbx,.gltf"
+                  style="flex: 1"
+                />
+                <button class="small primary" id="btnUpModel" type="button">
+                  上传模型
+                </button>
+              </div>
+              <div class="serial-hint">
+                支持 .glb / .fbx / .gltf；同名文件直接覆盖；上传后到
+                「设置」页选择该模型并保存，展示屏即自动切换
+              </div>
+            </div>
+          </div>
+          <div class="serial-divider"></div>
+          <div class="up-files" id="upModelFiles"></div>
+        </div>
+      </div>
+      <!-- /#uploadPanel -->
+
+      <!-- ========== 远程控制 ========== -->
+      <div id="controlPanel" style="display: none">
+        <div class="card">
+          <h3>
+            目标屏幕
+            <span class="muted">选择要控制的展示屏</span>
+          </h3>
+          <div class="row">
+            <select id="ctlTarget" style="flex: 1; min-width: 220px"></select>
+            <span class="muted" id="ctlTargetHint"></span>
+          </div>
+          <div class="serial-hint">
+            选择「全部展示屏」= 广播到所有屏；选择单台屏则仅该屏响应。
+            各屏当前展示的分类/产品可在「客户端」页查看。列表随在线屏自动更新。
+          </div>
+        </div>
+        <div class="card">
+          <h3>
+            侧边栏菜单
+            <span class="muted">显示或隐藏展示屏幕上的产品侧边栏</span>
+          </h3>
+          <div class="row">
+            <button type="button" id="btnSidebarShow">显示侧边栏</button>
+            <button type="button" id="btnSidebarHide">隐藏侧边栏</button>
+          </div>
+          <div class="serial-hint">此操作立即生效，不修改已保存的配置</div>
+        </div>
+        <div class="card">
+          <h3>
+            远程切换产品显示
+            <span class="muted"
+              >点击任意产品按钮，所有展示屏幕立即同步显示；点击分类名仅切换该分类</span
+            >
+          </h3>
+          <div id="ctlList"></div>
+          <div class="serial-hint">此操作立即生效，不修改已保存的配置</div>
+        </div>
+      </div>
+      <!-- /#controlPanel -->
+
+      <!-- ========== 客户端（实时连接状态） ========== -->
+      <div id="clientsPanel" style="display: none">
+        <div class="card">
+          <h3>
+            在线客户端
+            <span class="muted" id="clientsSummary"></span>
+          </h3>
+          <div class="serial-hint">
+            实时显示与本服务器保持 WebSocket 连接的展示屏与管理页（30s
+            心跳判活）； 展示屏可用 URL 参数
+            <code>?name=屏A</code> 命名，便于区分。连接/断开即时更新。
+          </div>
+          <div id="clientList"></div>
+        </div>
+      </div>
+      <!-- /#clientsPanel -->
+
+      <div id="stats"></div>
+    </main>
+
+    <div id="toast"></div>
+
+    <!-- 管理页脚本：整体迁出至 src/admin/adminMain.ts（Vite 模块入口，构建后仍是单文件） -->
+    <script type="module" src="/src/admin/adminMain.ts"></script>
+  </body>
+</html>

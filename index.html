@@ -1,0 +1,261 @@
+<!doctype html>
+<!--
+  TouchShow 3D 展览展示
+  - 单页应用：Three.js 全屏 3D 场景 + DOM 覆盖层（顶部标题栏 / 右侧产品侧边栏 / CoverFlow）
+  - 各 UI 容器由 src/*.ts 动态创建，此处仅提供空壳与入口脚本
+-->
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>TouchShow 3D 展览展示</title>
+    <!-- 资源加载画面样式由外部文件提供，进入主界面时由 JS 向右移出后移除 -->
+    <link rel="stylesheet" href="/src/system.css" />
+  </head>
+
+  <body>
+    <!-- 资源加载画面：页面打开即显示，图片/模型/材质读取到本地后显示「进入」按钮，手动进入 -->
+    <div id="loadingScreen">
+      <canvas id="lsParticles"></canvas>
+      <div class="ls-box">
+        <div class="ls-logo"><img src="" alt="Logo" /></div>
+        <div class="ls-name"><img src="" alt="Name" /></div>
+        <div class="ls-bar">
+          <div class="ls-bar-fill" id="lsBarFill"></div>
+        </div>
+        <div class="ls-text" id="lsText">正在读取资源…</div>
+        <div class="ls-ip" id="lsIp">本机地址：检测中…</div>
+
+        <button class="liquid-button" id="lsEnter">
+          <span class="liquid-button-text" id="liquidButtonText">Liquid</span>
+          <div class="liquid" id="liquid"></div>
+        </button>
+      </div>
+    </div>
+
+    <!-- 切换动画的飞机（✈ 图标，独立 fixed 层，由 loading.ts 驱动） -->
+    <div class="ls-plane" id="lsPlane" aria-hidden="true">✈</div>
+
+    <script>
+      /* 全局禁止右键弹出系统菜单（浏览器 / WebView 均拦截 contextmenu，页面加载即生效） */
+      document.addEventListener("contextmenu", (e) => e.preventDefault());
+
+      /* 加载画面粒子系统：蓝紫粒子缓缓上浮 + 正弦波浪漂移 + 邻近粒子连线 + 触摸/鼠标跟随交互 */
+      (function () {
+        var ls = document.getElementById("loadingScreen");
+        if (!ls) return;
+
+        var canvas = document.getElementById("lsParticles");
+        var ctx = canvas.getContext("2d");
+        var W = 0,
+          H = 0,
+          particles = [],
+          raf = null;
+
+        function resize() {
+          W = canvas.width = window.innerWidth;
+          H = canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener("resize", resize);
+
+        // 粒子数量随屏幕面积自适应（密度更高）
+        var COUNT = Math.max(80, Math.min(260, Math.round((W * H) / 8000)));
+
+        // 蓝 → 紫 科技配色
+        var COLORS = [
+          [0, 212, 255], // 青 #00d4ff
+          [77, 148, 255], // 蓝 #4d94ff
+          [124, 77, 255], // 紫 #7c4dff
+          [176, 112, 255], // 淡紫 #b070ff
+        ];
+
+        function makeParticle() {
+          var c = COLORS[(Math.random() * COLORS.length) | 0];
+          return {
+            x: Math.random() * W,
+            y: Math.random() * H,
+            vx: (Math.random() - 0.5) * 0.4, // 横向漂移
+            vy: -(0.25 + Math.random() * 0.45), // 上浮速度
+            bvx: 0, // 基础速度（交互斥力后阻尼回归目标）
+            bvy: 0,
+            r: 0.8 + Math.random() * 1.8, // 半径
+            phase: Math.random() * Math.PI * 2, // 波动相位
+            freq: 0.4 + Math.random() * 0.7, // 波动频率
+            amp: 8 + Math.random() * 22, // 波动幅度（波浪感）
+            alpha: 0.35 + Math.random() * 0.55, // 透明度
+            c: c,
+          };
+        }
+
+        for (var i = 0; i < COUNT; i++) {
+          var p0 = makeParticle();
+          p0.bvx = p0.vx; // 记录基础速度，供交互后回归
+          p0.bvy = p0.vy;
+          particles.push(p0);
+        }
+
+        // ---- 触摸 / 鼠标交互：粒子跟随指针流动（支持多点触摸） ----
+        var pointers = new Map(); // pointerId -> {x, y}
+
+        function ptFromEvent(e) {
+          var rect = canvas.getBoundingClientRect();
+          // 将 CSS 坐标转换为 canvas 像素坐标（适配 devicePixelRatio / 缩放），
+          // 保证指针位置与粒子绘制坐标系（canvas.width/height）一致
+          var sx = rect.width > 0 ? canvas.width / rect.width : 1;
+          var sy = rect.height > 0 ? canvas.height / rect.height : 1;
+          return {
+            x: (e.clientX - rect.left) * sx,
+            y: (e.clientY - rect.top) * sy,
+          };
+        }
+
+        ls.addEventListener("pointerdown", function (e) {
+          pointers.set(e.pointerId, ptFromEvent(e));
+        });
+        // 仅响应「已按下」的指针：触摸后移动 / 按住鼠标拖动才有反应，悬停不触发
+        ls.addEventListener("pointermove", function (e) {
+          if (pointers.has(e.pointerId))
+            pointers.set(e.pointerId, ptFromEvent(e));
+        });
+        function removePointer(e) {
+          pointers.delete(e.pointerId);
+        }
+        ls.addEventListener("pointerup", removePointer);
+        ls.addEventListener("pointercancel", removePointer);
+        // 鼠标离开加载画面时清掉鼠标指针（触摸指针由 pointerup 清除）
+        ls.addEventListener("pointerleave", function (e) {
+          if (e.pointerType === "mouse") pointers.delete(e.pointerId);
+        });
+
+        function draw() {
+          // 加载画面已被移除 → 停止动画
+          if (!ls.isConnected) {
+            cancelAnimationFrame(raf);
+            return;
+          }
+          ctx.clearRect(0, 0, W, H);
+
+          for (var i = 0; i < particles.length; i++) {
+            var p = particles[i];
+
+            // 触摸 / 鼠标交互：指针斥力场，粒子被推开形成「跟随流动」感
+            var R = 170; // 作用半径（px）
+            var FORCE = 1.1; // 推力强度
+            pointers.forEach(function (pt) {
+              var dx = p.x - pt.x;
+              var dy = p.y - pt.y;
+              var d2 = dx * dx + dy * dy;
+              if (d2 < R * R && d2 > 0.01) {
+                var d = Math.sqrt(d2);
+                var f = (1 - d / R) * FORCE;
+                p.vx += (dx / d) * f;
+                p.vy += (dy / d) * f;
+              }
+            });
+            // 阻尼回归：速度缓慢回到基础值，避免粒子被推走后一去不回
+            p.vx += (p.bvx - p.vx) * 0.03;
+            p.vy += (p.bvy - p.vy) * 0.03;
+
+            p.x += p.vx;
+            p.y += p.vy;
+            p.phase += p.freq * 0.04;
+            var px = p.x + Math.sin(p.phase) * p.amp; // 波浪漂移
+
+            // 边界回绕
+            if (p.y < -12) {
+              p.y = H + 12;
+              p.x = Math.random() * W;
+            }
+            if (px < -30) p.x = W + 10;
+            if (px > W + 30) p.x = -10;
+
+            // 绘制粒子（带辉光）
+            ctx.beginPath();
+            ctx.arc(px, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle =
+              "rgba(" +
+              p.c[0] +
+              "," +
+              p.c[1] +
+              "," +
+              p.c[2] +
+              "," +
+              p.alpha +
+              ")";
+            ctx.shadowColor =
+              "rgba(" + p.c[0] + "," + p.c[1] + "," + p.c[2] + ",0.9)";
+            ctx.shadowBlur = 10;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+            p._px = px;
+          }
+
+          // 邻近粒子连线（科技网络感）
+          var MAX_D = 130;
+          for (var i = 0; i < particles.length; i++) {
+            var a = particles[i];
+            for (var j = i + 1; j < particles.length; j++) {
+              var b = particles[j];
+              var dx = a._px - b._px;
+              var dy = a.y - b.y;
+              var d2 = dx * dx + dy * dy;
+              if (d2 < MAX_D * MAX_D) {
+                ctx.beginPath();
+                ctx.moveTo(a._px, a.y);
+                ctx.lineTo(b._px, b.y);
+                ctx.strokeStyle =
+                  "rgba(90,120,255," + (1 - Math.sqrt(d2) / MAX_D) * 0.25 + ")";
+                ctx.lineWidth = 1;
+                ctx.stroke();
+              }
+            }
+          }
+
+          // 指针与附近粒子连线（触摸跟随感，手指划过时粒子被点亮联动）
+          var LINK_D = 170;
+          pointers.forEach(function (pt) {
+            for (var k = 0; k < particles.length; k++) {
+              var q = particles[k];
+              var ddx = q._px - pt.x;
+              var ddy = q.y - pt.y;
+              var dd2 = ddx * ddx + ddy * ddy;
+              if (dd2 < LINK_D * LINK_D) {
+                var dd = Math.sqrt(dd2);
+                ctx.beginPath();
+                ctx.moveTo(pt.x, pt.y);
+                ctx.lineTo(q._px, q.y);
+                ctx.strokeStyle =
+                  "rgba(0,212,255," + (1 - dd / LINK_D) * 0.4 + ")";
+                ctx.lineWidth = 1;
+                ctx.stroke();
+              }
+            }
+          });
+
+          raf = requestAnimationFrame(draw);
+        }
+        raf = requestAnimationFrame(draw);
+      })();
+    </script>
+
+    <!-- 3D 场景背景：铺满全屏 -->
+    <div id="app"></div>
+
+    <!-- 顶部标题栏：左 Logo | 中 标题 | 右 菜单 -->
+    <div id="topBar">
+      <div id="topBar-left"></div>
+      <div id="topBar-center"></div>
+      <div id="topBar-right"></div>
+    </div>
+
+    <!-- 内容区：CoverFlow + 侧边栏 -->
+    <div id="contentArea"></div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

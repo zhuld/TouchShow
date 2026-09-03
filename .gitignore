@@ -1,0 +1,37 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+release/
+cache/
+
+# Tauri
+src-tauri/target/
+src-tauri/binaries/
+
+# Rust 后端编译产物
+backend/target/
+
+# 仅忽略第三方 AI 提示模板；项目自身规范 .github/copilot-instructions.md 需纳入版本控制
+.github/prompts/
+.others/

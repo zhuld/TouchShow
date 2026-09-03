@@ -1,0 +1,193 @@
+{
+  "category": [
+    {
+      "description": "防火系统系列产品属于ATA-26章，为飞机发动机舱、APU舱、货舱、引气管路、客舱等提供高灵敏、高可靠的探测和告警，通过灭火和抑火措施将着火和过热的危害控制到最小，确保乘客和飞机的安全。",
+      "dir": "防火系统",
+      "icon": "/icons/category-fire.svg",
+      "label": "防火系统系列产品",
+      "product": [
+        {
+          "action": "smoke_detector",
+          "description": "已获得CTSOA\n用于货舱、盥洗室、休息室，采用双波长技术精准识别烟雾粒子，排除干扰；配合先进的抗干扰算法，大幅降低误报率，确保探测的准确性与可靠性。",
+          "image": "/products/防火系统/烟雾探测器.png",
+          "label": "烟雾探测器",
+          "object": "烟雾探测器"
+        },
+        {
+          "action": "fire_alarm_detector",
+          "description": "CTSOA/随C909取证\nNTC热敏传感器随温度呈现不同电阻特性，用于发动机舱/APU舱/主起舱环境的快速探测。\n共晶盐过热探测器受热电抗急剧降低，用于引气泄漏管路和区域过热探测。",
+          "image": "/products/防火系统/火警过热探测器.png",
+          "label": "火警探测器",
+          "object": "火警探测线"
+        }
+      ]
+    },
+    {
+      "description": "空气分离装置（ASM）属于ATA47章，可从引气中分离出高纯度氮气，注入飞机燃油箱，降低燃油箱内氧浓度，提升燃油箱防火防爆安全性，满足机型适航与安全运行要求。",
+      "dir": "氧气惰化",
+      "icon": "/icons/category-oxygen.svg",
+      "label": "氧气、惰化系统系列产品",
+      "product": [
+        {
+          "action": "b737_air_separator_unit",
+          "description": "已完成PMA取证\n已在南航、山航、九元航空等航司完成装机试用\n相比OEM件，本产品显著降低成本，交付更快、保障更稳，减少AOG停场相关损失；严格按照航空级标准设计、验证、生产，PMA质量可控可追溯；安全可靠、交付稳定、服务响应更快，提升航司运营自主保障能力。",
+          "image": "/products/氧气惰化/B737空气分离装置.png",
+          "label": "B737空气分离装置",
+          "object": "B737空气分离装置"
+        }
+      ]
+    },
+    {
+      "description": "刹车系统系列产品属于ATA-32章，在飞机主起落架位置，供飞机起飞、着陆、滑行和支撑飞机使用，完成飞机在着陆及地面滑行时的制动，以及飞机起飞线刹车和起落架收起时的止动刹车。",
+      "dir": "刹车系统",
+      "icon": "/icons/category-brake.svg",
+      "label": "刹车系统系列产品",
+      "product": [
+        {
+          "action": "a320_carbon_brake_disc",
+          "description": "2009年取得PMA证书\n联合中国东方航空研制取证，累计交付上千套。\n该PMA碳刹车盘性能参数与OEM保持一致，极大降低航司采购成本。",
+          "image": "/products/刹车系统/A320飞机碳刹车盘.png",
+          "label": "A320飞机碳刹车盘",
+          "object": "刹车盘"
+        },
+        {
+          "action": "track",
+          "description": "2024年取得PMA证书\n现交付两个航司装机应用。\n飞机刹车时，刹车装置中刹车盘摩擦产生的刹车力矩通过导轨传递至主机轮，使飞机减速刹停。降低OEM采购价30%以上，缩短航司采购周期。",
+          "image": "/products/刹车系统/导轨.png",
+          "label": "导轨",
+          "object": "导轨"
+        }
+      ]
+    },
+    {
+      "description": "传感器系列产品主要属于ATA-21/27/34等章节，通过实时采集飞行姿态、环境数据及关键系统参数，为飞行控制、安全监控等提供精准决策依据，是保障飞行安全、提升运行效率及实现预测性维护的基石。",
+      "dir": "传感器",
+      "icon": "/icons/category-sensor.svg",
+      "label": "传感器系列产品",
+      "product": [
+        {
+          "action": "full_static_pressure_probe",
+          "description": "2025年12月31日获得CTSOA（CTSO-C16a)；\n具备全静压感受及115VAC防除冰功能；\n可靠性优于柯林斯同类产品，可用于航线飞机替代。",
+          "image": "/products/传感器/全静压探头.png",
+          "label": "总静压感受器",
+          "object": "总静压受感器",
+          "rotate": 90
+        }
+      ]
+    },
+    {
+      "description": "记录器系列产品属于ATA-23章，通过完整记录飞行数据与驾驶舱语音，为事故调查提供客观依据，是溯源真相、提升航空安全水平的关键设备。",
+      "dir": "记录器",
+      "icon": "/icons/category-recorder.svg",
+      "label": "记录器系列产品",
+      "product": [
+        {
+          "action": "cockpit_audio_recorder",
+          "description": "2023年12月依据CTSO-C123c、 CTSO-C177a独立取得CTSOA证书；\n2025年12月向中国国际航空交付28台；\nFB-52A达成了音频和数据链记录时长不小于25h，坠毁幸存强冲击指标6000g/5ms，远超国际3400g/5ms，实现国际领先；数据下载速率不小于4MB/s。",
+          "image": "/products/记录器/FB-52A.png",
+          "label": "FB-52A驾驶舱音频记录器",
+          "object": "FB-52A_1"
+        },
+        {
+          "action": "flight_data_recorder",
+          "description": "2025年10月依据CTSO-C124c独立取得CTSOA证书；\n坠毁幸存性能符合CTSO-C123c标准，强冲击指标6000g/5ms，远超国际3400g/5ms，实现国际领先；飞行数据记录时间不小于25h；数据下载速率不小于4MB/s；水下定位信标符合CTSO-C121b，信标信号持续时长≥ 90天。",
+          "image": "/products/记录器/FB-52B.png",
+          "label": "FB-52B飞行数据记录器",
+          "object": "FB-52B_1"
+        }
+      ]
+    },
+    {
+      "description": "照明及控制板系列产品主要属于ATA-33/24/26/31章，通过数据感知、分析处理、智能控制、照明显示等综合技术手段，为人员和装备提供满足飞机任务需要的光环境及人机交互功能。",
+      "dir": "照明控制板",
+      "icon": "/icons/category-lighting.svg",
+      "label": "照明及控制板系列产品",
+      "product": [
+        {
+          "action": "navigation_light",
+          "description": "2025年9月9日  CTSOA取证\n配套民用客机超百架\n国际领先的高光效、高耐侯、高可靠、长寿命、低功耗。",
+          "image": "/products/照明控制板/航行灯.png",
+          "label": "白光航行灯",
+          "object": "白光航行灯"
+        },
+        {
+          "action": "anti_collision_light",
+          "description": "红光防撞灯是安装在飞机顶部和底部的闪烁红灯，用于警告地面人员飞机正在运行（如发动机启动或滑行），同时提高飞机在空中和地面的可见性。",
+          "image": "/products/照明控制板/防撞灯.png",
+          "label": "红光防撞灯",
+          "object": "红光防撞灯"
+        }
+      ]
+    },
+    {
+      "description": "滤芯/活门系列产品主要属于ATA-21/28/29/30/36/38/47/49等章节，滤芯通过物理拦截保障介质清洁度以规避系统磨损，活门通过机械调节实现压力与流量的控制以维持系统稳定，保障飞行安全。",
+      "dir": "滤芯活门",
+      "icon": "/icons/category-filter.svg",
+      "label": "滤芯、活门系列产品",
+      "product": [
+        {
+          "action": "fuel_filter",
+          "description": "分别于2023年9月和2025年12月取得PMA证书\n覆盖C909和A320系列机型\n滤除APU燃油中的颗粒物、锈渣及胶质杂质，保障APU燃烧室稳定供油与可靠起动，在采购成本、交付周期等方面相比OEM件具有显著优势。",
+          "image": "/products/滤芯活门/燃油滤芯.png",
+          "label": "燃油滤芯",
+          "object": "燃油滤芯"
+        },
+        {
+          "action": "pressure_oil_filter",
+          "description": "2024年11月取得PMA证书\n覆盖C919机型，已与两家航司签订供应商入册\n高效滤除液压油中的颗粒物，防止污染物二次循环造成的设备磨损，在采购成本、交付周期等方面相比OEM件具有显著优势",
+          "image": "/products/滤芯活门/压力油滤滤芯.png",
+          "label": "压力油滤滤芯",
+          "object": "626010-101-XH-液压滤芯"
+        },
+        {
+          "action": "return_oil_filter",
+          "description": "2025年12月取得PMA证书\n覆盖A320系列机型\n滤除APU滑油中的金属磨屑、积碳及杂质颗粒，防止污染物对滑油泵等后端设备造成磨损或油路堵塞，在采购成本、交付周期等方面相比OEM件具有显著优势。",
+          "image": "/products/滤芯活门/回油油滤滤芯.png",
+          "label": "回油油滤滤芯",
+          "object": "626012-101-XH-液压滤芯"
+        },
+        {
+          "action": "air_water_filter",
+          "description": "2025年12月取得PMA证书\n覆盖A320系列机型\n充分滤除空气及水系统中的杂质，防止污染物对防冰控制阀、水泵等后端设备造成堵塞或磨损，在采购成本、交付周期等方面相比OEM件具有显著优势。",
+          "image": "/products/滤芯活门/壳体回油油滤滤芯.png",
+          "label": "壳体回油油滤滤芯",
+          "object": "626011-101-XH-液压滤芯"
+        },
+        {
+          "action": "medium_pressure_air_valve",
+          "description": "2026年3月取得PMA证书\n覆盖C909机型\n通过自主研发突破OEM技术局限，优化设计后的中压单向活门在振动条件下锁紧性能全面超越原厂标准，从根源上杜绝反流引发的空停风险，实现更高性价比与极短交付周期。",
+          "image": "/products/滤芯活门/中压单向活门.png",
+          "label": "中压单向活门",
+          "object": "中压单向活门"
+        }
+      ]
+    },
+    {
+      "description": "民机数字化平视显示器是一种先进驾驶舱光学显示系统，提供平视飞行信息及引导信息，显著增强飞行员的情景意识，提高低能见度及夜间条件下飞机起降能力及飞行安全，提高航班正点率",
+      "dir": "平视显示器",
+      "icon": "/icons/category-hud.svg",
+      "label": "平视显示器系统",
+      "product": [
+        {
+          "action": "hud",
+          "description": "产品获得了CAAC颁发的补充型号合格证书（STC）、技术标准规定项目批准书（CTSOA），适配B737-800飞机加改装\n显示飞行仪表及引导信息；支持飞机实现基于HUD的特殊I类运行；支持增强视景系统（EVS）视频扩展能力",
+          "image": "/products/平视显示器/平视显示器.png",
+          "label": "民机数字化平视显示器系统",
+          "object": "HUD",
+          "rotate": 180
+        }
+      ]
+    }
+  ],
+  "displayMode": "model",
+  "model": "C919.glb",
+  "serial": {
+    "baudRate": 9600,
+    "dataBits": 8,
+    "enabled": false,
+    "parity": "none",
+    "port": "COM3",
+    "stopBits": 1,
+    "template": "{action}\r\n"
+  }
+}

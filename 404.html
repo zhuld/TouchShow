@@ -1,0 +1,55 @@
+<!doctype html>
+<!--
+  TouchShow 404 页面
+  - 不支持的地址统一显示此页（HTTP 状态码 404）
+    - 独立单页：使用统一外部样式，适配展厅触控一体机
+-->
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>404 页面不存在 · TouchShow</title>
+    <link rel="stylesheet" href="/src/system.css" />
+  </head>
+
+  <body class="page-404">
+    <div class="wrap">
+      <div class="code">404</div>
+      <h1>页面不存在</h1>
+      <p class="desc">
+        您访问的地址不存在，或该页面已被移除。<br />请检查地址是否正确，或通过下方入口返回。
+      </p>
+      <div class="path" id="path"></div>
+      <div class="actions">
+        <a href="/" class="primary">返回首页</a>
+      </div>
+      <div class="hint"><span id="countdown">30</span> 秒后自动返回首页</div>
+    </div>
+
+    <script>
+      // 显示当前访问的错误路径
+      var pathEl = document.getElementById("path");
+      if (pathEl) {
+        pathEl.textContent =
+          location.hostname + location.pathname + location.search;
+        pathEl.title = location.href;
+      }
+
+      // 30 秒后自动返回首页（适合展厅触控一体机，避免停留在错误页）
+      var remain = 30;
+      var cdEl = document.getElementById("countdown");
+      var timer = setInterval(function () {
+        remain -= 1;
+        if (cdEl) cdEl.textContent = remain;
+        if (remain <= 0) {
+          clearInterval(timer);
+          location.href = "/";
+        }
+      }, 1000);
+    </script>
+  </body>
+</html>

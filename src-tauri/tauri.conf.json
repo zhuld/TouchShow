@@ -1,0 +1,58 @@
+{
+    "$schema": "https://schema.tauri.app/config/2",
+    "productName": "TouchShow",
+    "version": "0.1.0",
+    "identifier": "com.touchshow.desktop",
+    "build": {
+        "beforeDevCommand": "npm run dev",
+        "devUrl": "http://localhost:5173",
+        "beforeBuildCommand": "npm run build",
+        "frontendDist": "../dist"
+    },
+    "app": {
+        "windows": [
+            {
+                "label": "main",
+                "title": "TouchShow",
+                "width": 1920,
+                "height": 1080,
+                "fullscreen": true,
+                "resizable": false,
+                "decorations": false,
+                "center": true
+            }
+        ],
+        "security": {
+            "csp": null
+        }
+    },
+    "bundle": {
+        "active": false,
+        "targets": [
+            "nsis"
+        ],
+        "icon": [
+            "icons/32x32.png",
+            "icons/128x128.png",
+            "icons/128x128@2x.png",
+            "icons/icon.icns",
+            "icons/icon.ico"
+        ],
+        "externalBin": [
+            "binaries/TouchShow-server.exe"
+        ],
+        "resources": [],
+        "shortDescription": "TouchShow 3D 展览展示",
+        "longDescription": "TouchShow 3D 展览展示触控一体机应用",
+        "category": "Business",
+        "windows": {
+            "webviewInstallMode": {
+                "type": "skip"
+            },
+            "nsis": {
+                "installMode": "currentUser",
+                "displayLanguageSelector": true
+            }
+        }
+    }
+}

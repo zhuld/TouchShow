@@ -1,0 +1,32 @@
+{
+  "name": "touchshow",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "npm run build:server && concurrently -k -n server,vite -c blue,green \"npm run dev:server\" \"vite\"",
+    "dev:server": "node scripts/dev-server.mjs",
+    "build": "tsc && vite build",
+    "build:server": "cargo build --manifest-path backend/Cargo.toml",
+    "build:server:release": "cargo build --release --manifest-path backend/Cargo.toml",
+    "test": "node --test \"test/*.test.mjs\"",
+    "pretest": "npm run build:server",
+    "package": "node scripts/package.mjs",
+    "package:tauri": "node scripts/package-tauri.mjs",
+    "package:tauri:linux": "node scripts/package-tauri-linux.mjs",
+    "make-icon": "node scripts/make-icon.mjs"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.11.4",
+    "@types/node": "^26.4.0",
+    "concurrently": "^10.0.4",
+    "typescript": "~6.0.2",
+    "vite": "^8.2.0",
+    "ws": "^8.21.3"
+  },
+  "dependencies": {
+    "@types/three": "^0.185.3",
+    "gsap": "^3.15.0",
+    "three": "^0.185.1"
+  }
+}
