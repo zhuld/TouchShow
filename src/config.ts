@@ -7,6 +7,8 @@
  *   3. 通过 onConfigChange() 订阅变更，驱动侧边栏 / CoverFlow 即时刷新
  * ================================================================== */
 
+import { withBase } from './base.js';
+
 export interface Product {
     label: string;
     action: string;
@@ -92,9 +94,9 @@ export function readDisplayMode(cfg: Config): DisplayMode {
     return DISPLAY_MODES.includes(m as DisplayMode) ? (m as DisplayMode) : DEFAULT_DISPLAY_MODE;
 }
 
-/** 当前生效的 3D 模型完整地址（固定目录 /Models/ + 远程配置的文件名） */
+/** 当前生效的 3D 模型完整地址（固定目录 /Models/ + 远程配置的文件名，拼接部署基础路径） */
 export function getModelUrl(): string {
-    return `/Models/${encodeURIComponent(readModelName(current))}`;
+    return withBase(`/Models/${encodeURIComponent(readModelName(current))}`);
 }
 
 /** 从配置中规整串口参数（容错：缺失/非法值回退到缺省值） */
@@ -112,8 +114,8 @@ export function readSerialConfig(cfg: Config): SerialConfig {
     };
 }
 
-/** 优先服务器 API（支持实时同步）；服务器不可用时退回静态 config.json */
-const CONFIG_URLS = ['/api/config', '/config.json'];
+/** 优先服务器 API（支持实时同步）；服务器不可用时退回静态 config.json（均需拼接部署基础路径） */
+const CONFIG_URLS = [withBase('/api/config'), withBase('/config.json')];
 
 let current: Config = { category: [] }; // 当前生效配置（内存副本）
 let snapshot = ''; // 上次通知时的 JSON 快照，用于检测内容是否真正变化

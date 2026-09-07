@@ -3,6 +3,7 @@ import { gsap } from 'gsap';
 // 产品 / 分类类型统一来自 config.ts（避免本地重复定义造成字段漂移）
 import type { Category } from './config.js';
 import { resetActiveProduct, setActiveProduct } from './uiStore.js';
+import { withBase } from './base.js';
 
 /* ==================================================================
  * Cover Flow 3D 产品展示
@@ -166,8 +167,8 @@ export function showCoverFlow(category: Category, startIndex = 0, updateDescript
 
         const img = document.createElement('img');
         img.draggable = false;
-        // config.json 中图片路径为 /products/... 绝对路径（public 资源）
-        img.src = prod.image;
+        // config.json 中图片路径为 /products/... 绝对路径（public 资源），拼接部署基础路径
+        img.src = withBase(prod.image);
         img.alt = prod.label;
         // 卡片带 3D 变换时懒加载视口判定会失效（图片永不加载），且图片已在加载画面预加载进缓存，故用 eager
         img.loading = 'eager';

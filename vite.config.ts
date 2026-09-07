@@ -105,6 +105,26 @@ function notFoundPage(): Plugin {
   };
 }
 
+/**
+ * HTML 基础路径注入：
+ *  - 构建时把 HTML（如 404.html 的返回首页链接）中的 __APP_BASE__ 占位符
+ *    替换为解析后的 base（默认 '/'；GitHub Pages 构建为 '/TouchShow/'）；
+ *  - 纯内联脚本 / 普通 <a href> 不走 Vite 的 import.meta.env 注入，
+ *    需要用该占位符方式在构建期固化基础路径。
+ */
+function htmlBasePlugin(): Plugin {
+  let base = '/';
+  return {
+    name: 'touchshow-html-base',
+    configResolved(config) {
+      base = config.base;
+    },
+    transformIndexHtml(html) {
+      return html.replaceAll('__APP_BASE__', base);
+    },
+  };
+}
+
 // Vite 配置：开启局域网访问（host: true），方便触摸屏/局域网内设备调试
 export default defineConfig({
   // 项目根目录默认为当前目录（即本配置文件所在目录），此处显式声明
@@ -112,7 +132,7 @@ export default defineConfig({
   // MPA 模式：关闭 SPA history fallback（未知路径不再回退到 index.html），
   // 配合 notFoundPage 插件让不支持的地址显示 404 页面
   appType: 'mpa',
-  plugins: [localIpPlugin(), notFoundPage()],
+  plugins: [localIpPlugin(), notFoundPage(), htmlBasePlugin()],
   server: {
     // 监听 0.0.0.0，允许局域网内其他设备（如触摸屏一体机）通过本机 IP 访问
     host: true,

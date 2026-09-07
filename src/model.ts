@@ -11,6 +11,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 import { getConfig, getModelUrl, onConfigChange, readModelName } from './config.js';
+import { withBase } from './base.js';
 
 // ---- 配置 ----
 // 3D 模型固定目录 /Models/：模型文件放置于此，具体文件名由 config.json 的 model 字段远程指定。
@@ -111,7 +112,7 @@ function loadModel(url: string): Promise<THREE.Object3D> {
     return new Promise((resolve, reject) => {
         const ext = url.split('.').pop()?.toLowerCase();
         if (ext === 'fbx') {
-            const texUrl = '/Models/tex/';
+            const texUrl = withBase('/Models/tex/');
             new FBXLoader()
                 .setResourcePath(texUrl)
                 .load(

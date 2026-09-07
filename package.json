@@ -7,6 +7,7 @@
     "dev": "npm run build:server && concurrently -k -n server,vite -c blue,green \"npm run dev:server\" \"vite\"",
     "dev:server": "node scripts/dev-server.mjs",
     "build": "tsc && vite build",
+    "build:pages": "tsc && vite build --base=/TouchShow/",
     "build:server": "cargo build --manifest-path backend/Cargo.toml",
     "build:server:release": "cargo build --release --manifest-path backend/Cargo.toml",
     "test": "node --test \"test/*.test.mjs\"",

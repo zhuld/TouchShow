@@ -112,12 +112,21 @@ npm run make-icon
 ```
 
 - `npm run build`：生成前端文件到 `dist/`。
+- `npm run build:pages`：以 `/TouchShow/` 为基础路径构建（GitHub Pages 部署用）。
 - `npm run package`：生成 `release/TouchShow.exe` 和外部 `release/public/`（dist 在编译期内嵌进 exe）。
 - `npm run package:tauri`：生成 Windows Tauri 安装包。
 - `npm run package:tauri:linux`：在 Linux 构建机生成 Linux Tauri 包。
 - `npm run make-icon`：根据 `src/assets/logo.png` 生成 Tauri 应用图标。
 
 `dist/`、`release/` 和 `src-tauri/target/` 都是生成目录，不要手动编辑。**前端产物 `dist/` 在 `cargo build` 时内嵌进后端可执行文件（编译期固化，发布形态不对外暴露、不可被修改）**；修改 `public/` 后，EXE 或 Tauri 包需要重新打包才能同步资源。
+
+## GitHub Pages 静态演示
+
+推送到 `master` 后，GitHub Actions（`.github/workflows/deploy-pages.yml`）会自动构建并发布前端静态站点到 **https://zhuld.github.io/TouchShow/**。
+
+- 静态托管无法运行 Rust 后端，线上为**演示模式**：展示页加载 `/api/config` 失败后自动降级读取静态 `config.json`（产品图片 / 3D 模型等资源正常展示）；管理页远程保存、资源上传、远程控制、串口等后端功能不可用（需本地或局域网运行 EXE 后端）。
+- 构建（`npm run build:pages`）以 `/TouchShow/` 为基础路径；代码中 `/config.json`、`/Models/`、`/products/`、`/icons/` 等运行时资源地址通过 `src/base.ts` 的 `withBase()` 统一拼接基础路径，默认构建（EXE/Tauri，base 为 `/`）行为不受影响。
+- 也可手动触发：仓库 Actions 页选择「Deploy to GitHub Pages」→ Run workflow。
 
 ## 项目结构
 

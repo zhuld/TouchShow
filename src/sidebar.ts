@@ -5,6 +5,7 @@ import { getConfig, fetchConfig, onConfigChange, onRemoteControl, readDisplayMod
 import type { Category, Product, RemoteCommand } from './config';
 import type { ModelManager } from './model';
 import { onActiveProductChange } from './uiStore';
+import { withBase } from './base';
 import { gsap } from 'gsap';
 
 /* ==================================================================
@@ -402,7 +403,7 @@ function renderSidebar(): void {
         if (icon && iconValue) {
             if (/\.svg(?:[?#].*)?$/i.test(iconValue)) {
                 const image = document.createElement('img');
-                image.src = new URL(iconValue, document.baseURI).href;
+                image.src = new URL(withBase(iconValue), document.baseURI).href;
                 image.alt = '';
                 icon.appendChild(image);
             } else {

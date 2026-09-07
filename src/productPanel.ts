@@ -1,4 +1,5 @@
 import type { Product } from './config';
+import { withBase } from './base';
 import { gsap } from 'gsap';
 
 /* ==================================================================
@@ -52,7 +53,7 @@ function applyProd(prod: Product): void {
     if (!panelLabel || !panelDesc || !panelImg) return;
     panelLabel.textContent = prod.label;
     panelDesc.textContent = formatDesc(prod.description || '');
-    panelImg.src = prod.image;
+    panelImg.src = withBase(prod.image);
     panelImg.alt = prod.label;
     currentLabel = prod.label;
 }

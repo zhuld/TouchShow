@@ -19,6 +19,7 @@ import { createTitleLabel } from './titleLabel.js';
 import { createCoverFlow } from './coverflow.js';
 import { fetchConfig, getConfig, getConfigLoadError, getModelUrl, onConfigChange, readDisplayMode, startConfigSync } from './config.js';
 import { preloadResources } from './preload.js';
+import { withBase } from './base.js';
 import { updateLoading, setLoadingText, showEnterButton, showConfigError } from './loading.js';
 import './style.css';
 
@@ -198,7 +199,7 @@ void (async () => {
     // ② 收集全部资源地址并预加载到本地缓存（产品图片 + 3D 模型文件）
     const urls: string[] = [];
     getConfig().category.forEach((cat) => {
-      cat.product.forEach((prod) => urls.push(prod.image));
+      cat.product.forEach((prod) => urls.push(withBase(prod.image)));
     });
     urls.push(getModelUrl());
     await preloadResources(urls, (loaded, total) => updateLoading(loaded, total));
